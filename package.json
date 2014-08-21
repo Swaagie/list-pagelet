@@ -1,0 +1,29 @@
+{
+  "name": "list-pagelet",
+  "version": "0.0.0",
+  "description": "Display a vertical list of an array or collection",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Swaagie/list-pagelet.git"
+  },
+  "keywords": [
+    "layout",
+    "list",
+    "collection",
+    "vertical"
+  ],
+  "author": "Martijn Swaagman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Swaagie/list-pagelet/issues"
+  },
+  "homepage": "https://github.com/Swaagie/list-pagelet",
+  "dependencies": {
+    "handlebars": "^2.0.0-alpha.4",
+    "pagelet": "^0.7.2"
+  }
+}
