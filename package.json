@@ -24,6 +24,6 @@
   "homepage": "https://github.com/Swaagie/list-pagelet",
   "dependencies": {
     "handlebars": "^2.0.0-alpha.4",
-    "pagelet": "^0.7.2"
+    "pagelet": "^0.8.0"
   }
 }
