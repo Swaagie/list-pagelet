@@ -13,16 +13,22 @@ pagelet = Pagelet.extend({
 
   //
   // Key or function which denotes how the data should be ordered before
-  // the list is generated.
+  // the list is generated. By default modules will be sorted on
+  // downloadCount. Always sorts from high to low.
   //
-  order: null,
+  order: 'downloadCount',
 
   //
   // Collection of objects, each object represents one list item.
   //
   data: [{
-    title: 'Knockout.JS',
-    link: 'http://knockoutjs.com/'
+    title: 'KnockoutJS',
+    link: 'http://knockoutjs.com/',
+    downloadCount: 10
+  }, {
+    title: 'AngularJS',
+    link: 'https://angularjs.org/',
+    downloadCount: 110
   }],
 
   /**
@@ -33,18 +39,22 @@ pagelet = Pagelet.extend({
    */
   get: function get(render) {
     var list = this
-      , sort;
+      , order = list.order;
 
     //
     // If order is a user provided function simply pass that to sort.
     //
-    if ('function' === typeof this.order) sort = this.order;
-    if (!sort) sort = function sort(a, b) {
-      // implement sort by key.
+    if ('function' !== typeof order) order = function sort(a, b) {
+      a = a[order];
+      b = b[order];
+
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
     };
 
     render(null, {
-      data: this.data.sort(sort)
+      data: this.data.sort(order)
     });
   }
 }).on(module);
