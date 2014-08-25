@@ -16,19 +16,19 @@ pagelet = Pagelet.extend({
   // the list is generated. By default modules will be sorted on
   // downloadCount. Always sorts from high to low.
   //
-  order: 'downloadCount',
+  order: 'downloads',
 
   //
   // Collection of objects, each object represents one list item.
   //
   data: [{
-    title: 'KnockoutJS',
+    name: 'KnockoutJS',
     link: 'http://knockoutjs.com/',
-    downloadCount: 10
+    downloads: 10
   }, {
-    title: 'AngularJS',
+    name: 'AngularJS',
     link: 'https://angularjs.org/',
-    downloadCount: 110
+    downloads: 110
   }],
 
   /**
