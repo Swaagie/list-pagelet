@@ -10,13 +10,33 @@ var Pagelet = require('pagelet')
 pagelet = Pagelet.extend({
   view: 'view.hbs',
   css: 'css.styl',
+  js: 'client.js',
+
+  dependencies: [
+    '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+  ],
 
   //
   // Key or function which denotes how the data should be ordered before
   // the list is generated. By default modules will be sorted on
   // downloadCount. Always sorts from high to low.
   //
-  order: 'downloads',
+  order: ['downloads', 'followers'],
+
+  rpc: ['sort'],
+
+  get sort() {
+    var order = this.order[0];
+
+    return function(a, b) {
+      a = a[order];
+      b = b[order];
+
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
+    };
+  },
 
   //
   // Collection of objects, each object represents one list item.
@@ -24,11 +44,13 @@ pagelet = Pagelet.extend({
   data: [{
     name: 'KnockoutJS',
     link: 'http://knockoutjs.com/',
-    downloads: 10
+    downloads: 10,
+    followers: 20,
   }, {
     name: 'AngularJS',
     link: 'https://angularjs.org/',
-    downloads: 110
+    downloads: 110,
+    followers: 8
   }],
 
   /**
@@ -38,23 +60,14 @@ pagelet = Pagelet.extend({
    * @api public
    */
   get: function get(render) {
-    var list = this
-      , order = list.order;
+    var sort = this.sort;
 
     //
-    // If order is a user provided function simply pass that to sort.
+    // Provide data to renderer after sorting.
     //
-    if ('function' !== typeof order) order = function sort(a, b) {
-      a = a[order];
-      b = b[order];
-
-      if (a < b) return -1;
-      if (a > b) return 1;
-      return 0;
-    };
-
     render(null, {
-      data: this.data.sort(order)
+      data: this.data.sort(sort),
+      order: this.order
     });
   }
 }).on(module);

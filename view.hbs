@@ -1,9 +1,15 @@
 <section class="list">
-{{#each data}}
-  <div class="item row">
-    <a href="{{link}}">
-      {{name}}
-    </a>
+  <div class="order right">
+    Order by:
+    <select name="order">
+      {{#each order}}
+      <option value="{{.}}">{{.}}</option>
+      {{/each}}
+    </select>
   </div>
-{{/each}}
+  {{#each data}}
+  <a href="{{link}}" class="item row">
+    {{name}}
+  </a>
+  {{/each}}
 </section>
