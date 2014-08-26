@@ -1,6 +1,6 @@
 {
   "name": "list-pagelet",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Display a vertical list of an array or collection",
   "main": "index.js",
   "scripts": {
