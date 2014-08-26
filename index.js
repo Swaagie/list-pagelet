@@ -12,6 +12,9 @@ pagelet = Pagelet.extend({
   css: 'css.styl',
   js: 'client.js',
 
+  //
+  // Depend on the latest jQuery, will be loaded via the page.
+  //
   dependencies: [
     '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
   ],
@@ -23,19 +26,33 @@ pagelet = Pagelet.extend({
   //
   order: ['downloads', 'followers'],
 
+  //
+  // Allow sort to be called from the client, this will resort the data and return
+  // the changed list.
+  //
   rpc: ['sort'],
 
-  get sort() {
-    var order = this.order[0];
-
-    return function(a, b) {
+  /**
+   * Sort data on provided order. This method is also available via RPC.
+   *
+   * @param {Function} reply Completion callback
+   * @param {String} order Key on objects used to sort by.
+   * @returns {Array} Data collection.
+   * @api public
+   */
+  sort: function sort(reply, order) {
+    var data = this.data.slice().sort(function(a, b) {
       a = a[order];
       b = b[order];
 
       if (a < b) return -1;
       if (a > b) return 1;
       return 0;
-    };
+    });
+    console.log(reply, order);
+
+    if (reply) return reply(null, data)
+    return data;
   },
 
   //
@@ -60,13 +77,8 @@ pagelet = Pagelet.extend({
    * @api public
    */
   get: function get(render) {
-    var sort = this.sort;
-
-    //
-    // Provide data to renderer after sorting.
-    //
     render(null, {
-      data: this.data.sort(sort),
+      data: this.sort(null, this.order[0]),
       order: this.order
     });
   }
