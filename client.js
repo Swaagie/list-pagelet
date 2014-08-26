@@ -12,7 +12,7 @@ pipe.once('list:initialize', function init(pagelet) {
    */
   function sort(data) {
     data.forEach(function each(item, i) {
-      base.find('#' + item.id).css('top', item.top);
+      base.find('#' + item.id).css('transform', 'translate3d(0,'+ item.y +',0)');
     });
   }
 

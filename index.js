@@ -49,11 +49,11 @@ pagelet = Pagelet.extend({
       if (a < b) return 1;
       return 0;
     }).map(function map(item, i) {
-      item.top = i * 70;
+      item.y = i * 120 + '%';
       return item;
     });
 
-    if (reply) return reply(data)
+    if (reply) return reply(data);
     return data;
   },
 
