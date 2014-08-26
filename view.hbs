@@ -1,17 +1,15 @@
-<section class="list">
-  <div class="order right">
-    Order by:
-    <select name="order">
-      {{#each order}}
-      <option value="{{.}}">{{.}}</option>
-      {{/each}}
-    </select>
-  </div>
-  <div class="collection">
-    {{#each data}}
-    <a id="{{id}}" href="{{link}}" class="item row" style="transform:translate3d(0,{{y}},0)">
-      {{name}}
-    </a>
+<div class="order right">
+  Order by:
+  <select name="order">
+    {{#each order}}
+    <option value="{{.}}">{{.}}</option>
     {{/each}}
-  </div>
-</section>
+  </select>
+</div>
+<div class="collection">
+  {{#each data}}
+  <a id="{{id}}" href="{{link}}" class="item row" style="transform:translate3d(0,{{y}},0)">
+    {{name}}
+  </a>
+  {{/each}}
+</div>
