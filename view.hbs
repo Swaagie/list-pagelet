@@ -7,9 +7,11 @@
       {{/each}}
     </select>
   </div>
-  {{#each data}}
-  <a href="{{link}}" class="item row">
-    {{name}}
-  </a>
-  {{/each}}
+  <div class="collection">
+    {{#each data}}
+    <a id="{{id}}" href="{{link}}" class="item row" style="top:{{top}}px">
+      {{name}}
+    </a>
+    {{/each}}
+  </div>
 </section>

@@ -41,34 +41,27 @@ pagelet = Pagelet.extend({
    * @api public
    */
   sort: function sort(reply, order) {
-    var data = this.data.slice().sort(function(a, b) {
-      a = a[order];
-      b = b[order];
+    var data = this.data.slice().sort(function sort(a, b) {
+      a = a[order] || 0;
+      b = b[order] || 0;
 
-      if (a < b) return -1;
-      if (a > b) return 1;
+      if (a > b) return -1;
+      if (a < b) return 1;
       return 0;
+    }).map(function map(item, i) {
+      item.top = i * 70;
+      return item;
     });
-    console.log(reply, order);
 
-    if (reply) return reply(null, data)
+    if (reply) return reply(data)
     return data;
   },
 
   //
   // Collection of objects, each object represents one list item.
+  // The following properties for an object are required: id, name, link
   //
-  data: [{
-    name: 'KnockoutJS',
-    link: 'http://knockoutjs.com/',
-    downloads: 10,
-    followers: 20,
-  }, {
-    name: 'AngularJS',
-    link: 'https://angularjs.org/',
-    downloads: 110,
-    followers: 8
-  }],
+  data: [],
 
   /**
    * Called on GET, provide data to render the list.
