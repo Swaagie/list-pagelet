@@ -1,6 +1,6 @@
 {
   "name": "list-pagelet",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Display a vertical list of an array or collection",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Swaagie/list-pagelet",
   "dependencies": {
-    "handlebars": "^2.0.0-alpha.4",
-    "pagelet": "^0.8.0"
+    "handlebars": "2.0.x",
+    "pagelet": "0.8.x"
   }
 }

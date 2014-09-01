@@ -7,12 +7,15 @@ pipe.once('list:initialize', function init(pagelet) {
     , items = collection.find('.item');
 
   /**
-   * Update the absolute position of each item.
+   * Update the absolute position of each item. If an error occurs do nothing.
    *
+   * @param {Error} error
    * @param {Object} data Collection.
    * @api private
    */
-  function sort(data) {
+  function sort(error, data) {
+    if (error) return;
+
     data.forEach(function each(item, i) {
       collection.find('#' + item.id).css('transform', 'translate3d(0,'+ item.y +',0)');
     });

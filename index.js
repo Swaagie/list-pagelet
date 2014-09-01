@@ -41,24 +41,43 @@ pagelet = Pagelet.extend({
    * @api public
    */
   sort: function sort(reply, order) {
-    var data = this.data.slice().sort(function sort(a, b) {
+    var data = this.data;
+
+    function list(a, b) {
       a = a[order] || 0;
       b = b[order] || 0;
 
       if (a > b) return -1;
       if (a < b) return 1;
       return 0;
-    }).map(function map(item, i) {
+    }
+
+    function map(item, i) {
       item.y = i * 120 + '%';
       return item;
-    });
+    }
 
-    if (reply) return reply(data);
-    return data;
+    //
+    // Extract the data from the data source, and return a sorted and mapped
+    // collection if the source is a synchronous function or plain dataset.
+    //
+    if ('function' === typeof data && !data.length) data = data();
+    if ('function' !== typeof data) return reply(null, data.slice().sort(list).map(map));
+
+    //
+    // Assume data is an asynchronous function, that accepts the callback as
+    // first parameter and uses a error first callback pattern.
+    //
+    data(function get(error, data) {
+      if (error) return reply(error);
+      reply(null, data.slice().sort(list).map(map));
+    })
   },
 
   //
   // Collection of objects, each object represents one list item.
+  // This can also be a function, async or sync, that returns a collection.
+  // The asynchronous function should accept callback as argument.
   // The following properties for an object are required: id, name, link
   //
   data: [],
@@ -70,9 +89,13 @@ pagelet = Pagelet.extend({
    * @api public
    */
   get: function get(render) {
-    render(null, {
-      data: this.sort(null, this.order[0]),
-      order: this.order
-    });
+    var list = this;
+
+    list.sort(function sorted(error, data) {
+      render(error, {
+        data: data,
+        order: list.order
+      });
+    }, list.order[0]);
   }
 }).on(module);
