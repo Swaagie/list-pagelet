@@ -43,7 +43,7 @@ pagelet = Pagelet.extend({
   sort: function sort(reply, order) {
     var data = this.data;
 
-    function list(a, b) {
+    function by(a, b) {
       a = a[order] || 0;
       b = b[order] || 0;
 
@@ -61,16 +61,16 @@ pagelet = Pagelet.extend({
     // Extract the data from the data source, and return a sorted and mapped
     // collection if the source is a synchronous function or plain dataset.
     //
-    if ('function' === typeof data && !data.length) data = data();
-    if ('function' !== typeof data) return reply(null, data.slice().sort(list).map(map));
+    if ('function' === typeof data && !data.length) data = data.call(this);
+    if ('function' !== typeof data) return reply(null, data.slice().sort(by).map(map));
 
     //
     // Assume data is an asynchronous function, that accepts the callback as
     // first parameter and uses a error first callback pattern.
     //
-    data(function get(error, data) {
+    data.call(this, function get(error, data) {
       if (error) return reply(error);
-      reply(null, data.slice().sort(list).map(map));
+      reply(null, data.slice().sort(by).map(map));
     })
   },
 
@@ -90,7 +90,6 @@ pagelet = Pagelet.extend({
    */
   get: function get(render) {
     var list = this;
-
     list.sort(function sorted(error, data) {
       render(error, {
         data: data,
