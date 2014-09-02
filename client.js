@@ -2,9 +2,10 @@ pipe.once('list:initialize', function init(pagelet) {
   'use strict';
 
   var base = $(pagelet.placeholders)
-    , order = base.find('.order')
+    , order = base.find('select[name="order"]')
     , collection = base.find('.collection')
-    , items = collection.find('.item');
+    , items = collection.find('.item')
+    , current;
 
   /**
    * Update the absolute position of each item. If an error occurs do nothing.
@@ -17,7 +18,10 @@ pipe.once('list:initialize', function init(pagelet) {
     if (error) return;
 
     data.forEach(function each(item, i) {
-      collection.find('#' + item.id).css('transform', 'translate3d(0,'+ item.y +',0)');
+      collection
+        .find('#' + item.id).css('transform', 'translate3d(0,'+ item.y +',0)')
+        .find('[data-property]').hide().parent()
+        .find('[data-property="' + current + '"]').show();
     });
   }
 
@@ -25,7 +29,8 @@ pipe.once('list:initialize', function init(pagelet) {
   // Different data order selected, call the server side sort and update the list.
   //
   order.on('change', function change() {
-    pagelet.sort($(this).find(':selected').val(), sort);
+    current = $(this).find(':selected').val();
+    pagelet.sort(current, sort);
   });
 
   //

@@ -2,8 +2,8 @@
   <div class="right">
     Order by:
     <select name="order">
-      {{#each order}}
-      <option value="{{.}}">{{.}}</option>
+      {{#each keys}}
+      <option value="{{.}}"{{{select}}}>{{.}}</option>
       {{/each}}
     </select>
   </div>
@@ -12,6 +12,13 @@
   {{#each data}}
   <a id="{{id}}" href="{{link}}" class="item row" style="transform:translate3d(0,{{y}},0)">
     {{name}}
+    {{#each properties}}
+      <small>
+        <strong data-property="{{@key}}" class="right"{{{show}}}>
+          {{this}}
+        </strong>
+      </small>
+    {{/each}}
   </a>
   {{/each}}
 </section>

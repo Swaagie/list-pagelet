@@ -20,11 +20,10 @@ pagelet = Pagelet.extend({
   ],
 
   //
-  // Key or function which denotes how the data should be ordered before
-  // the list is generated. By default modules will be sorted on
-  // downloadCount. Always sorts from high to low.
+  // Default property which will be used to order the data before
+  // the list is generated. Always sorts from high to low.
   //
-  order: ['downloads', 'followers'],
+  order: '',
 
   //
   // Allow sort to be called from the client, this will resort the data and return
@@ -44,8 +43,8 @@ pagelet = Pagelet.extend({
     var data = this.data;
 
     function by(a, b) {
-      a = a[order] || 0;
-      b = b[order] || 0;
+      a = a.properties[order] || 0;
+      b = b.properties[order] || 0;
 
       if (a > b) return -1;
       if (a < b) return 1;
@@ -78,7 +77,7 @@ pagelet = Pagelet.extend({
   // Collection of objects, each object represents one list item.
   // This can also be a function, async or sync, that returns a collection.
   // The asynchronous function should accept callback as argument.
-  // The following properties for an object are required: id, name, link
+  // Default required keys per object: id, name, link and properties.
   //
   data: [],
 
@@ -89,12 +88,60 @@ pagelet = Pagelet.extend({
    * @api public
    */
   get: function get(render) {
-    var list = this;
+    var list = this
+      , order = list.order;
+
     list.sort(function sorted(error, data) {
-      render(error, {
-        data: data,
-        order: list.order
+      if (error) return render(error);
+
+      render(null, {
+        keys: Object.keys(data[0].properties),
+        order: order,
+        data: data
       });
-    }, list.order[0]);
+    }, order);
+  },
+
+  /**
+   * Getter that provides a Handlebars helper function. This will show the
+   * value of the property that the list is currently ordered by.
+   *
+   * @returns {Function} Handlebars helper.
+   * api public
+   */
+  get show() {
+    var order = this.order;
+
+    return function show(options) {
+      return options.data.key !== order ? ' style="display:none"' : '';
+    }
+  },
+
+  /**
+   * Getter that provides a Handlebars helper function. This will set a selected
+   * property on property option that the list is currently order by.
+   *
+   * @returns {Function} Handlebars helper.
+   * api public
+   */
+  get select() {
+    var order = this.order;
+
+    return function select(options) {
+      return this === order ? ' selected' : '';
+    }
+  },
+
+  /**
+   * Override the default constructor to register the handlebars
+   * helper functions once.
+   *
+   * @api private
+   */
+  constructor: function constructor() {
+    pagelet.__super__.constructor.apply(this, arguments);
+
+    this.temper.require('handlebars').registerHelper('show', this.show);
+    this.temper.require('handlebars').registerHelper('select', this.select);
   }
 }).on(module);

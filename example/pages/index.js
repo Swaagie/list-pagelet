@@ -12,20 +12,26 @@ Page.extend({
         id: 'knockout',
         name: 'KnockoutJS',
         link: 'http://knockoutjs.com/',
-        downloads: 10,
-        followers: 20,
+        properties: {
+          downloads: 10,
+          followers: 20
+        }
       }, {
         id: 'angular',
         name: 'AngularJS',
         link: 'https://angularjs.org/',
-        downloads: 110,
-        followers: 8
+        properties: {
+          downloads: 110,
+          followers: 8
+        }
       }, {
         id: 'meteor',
         name: 'Meteor',
         link: 'https://www.meteor.com/',
-        downloads: 2099,
-        followers: 4
+        properties: {
+          downloads: 2099,
+          followers: 4
+        }
       }]
     })
   }
