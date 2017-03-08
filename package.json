@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Swaagie/list-pagelet",
   "dependencies": {
-    "handlebars": "2.0.x",
-    "pagelet": "0.8.x"
+    "handlebars": "~4.0.6",
+    "pagelet": "~0.9.3"
   }
 }
